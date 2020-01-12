@@ -5,8 +5,12 @@
   "repository": "git@github.com:otakustay/source-tokenizer.git",
   "author": "otakustay <otakustay@gmail.com>",
   "license": "MIT",
+  "files": [
+    "dist",
+    "types"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "start": "skr dev --src=demo",
     "lint": "skr lint src demo types"
   },
@@ -21,11 +25,18 @@
     "classnames": "^2.2.6",
     "echarts": "^4.6.0",
     "element-resize-detector": "^1.1.16",
+    "husky": "^4.0.7",
     "lodash": "^4.17.15",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "refractor": "^2.10.0",
     "reskript": "^0.24.0",
     "webpack": "^4.41.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn build"
+    }
   }
 }

@@ -2,7 +2,6 @@
     "extends": "./node_modules/reskript/config/tsconfig.json",
     "include": [
         "src",
-        "demo"
     ],
     "compilerOptions": {
         "allowJs": false,
@@ -10,8 +9,9 @@
         "module": "CommonJS",
         "strict": true,
         "sourceMap": true,
+        "rootDir": "./src",
         "outDir": "./dist",
         "noEmit": false,
-        "jsx": "preserve",
+        "declaration": true
     }
 }
