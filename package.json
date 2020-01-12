@@ -12,7 +12,8 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "start": "skr dev --src=demo",
-    "lint": "skr lint src demo types"
+    "lint": "skr lint src demo types",
+    "test": "skr test"
   },
   "devDependencies": {
     "@types/echarts": "^4.4.2",
@@ -38,5 +39,8 @@
       "pre-commit": "yarn lint",
       "pre-push": "yarn build"
     }
+  },
+  "dependencies": {
+    "fast-deep-equal": "^3.1.1"
   }
 }

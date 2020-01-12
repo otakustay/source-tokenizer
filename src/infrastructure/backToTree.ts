@@ -1,3 +1,4 @@
+import deepEquals from 'fast-deep-equal';
 import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../../types';
 import {last} from '../utils';
 
@@ -23,7 +24,7 @@ const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean =
             continue;
         }
 
-        if (!y.hasOwnProperty(key) || x[key] !== y[key]) {
+        if (!y.hasOwnProperty(key) || !deepEquals(x[key], y[key])) {
             return false;
         }
     }
