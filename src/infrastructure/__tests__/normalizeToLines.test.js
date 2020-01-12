@@ -37,6 +37,7 @@ describe('normalizeToLines', () => {
             children: [
                 {
                     type: 'element',
+                    properties: {className: ['identifier']},
                     children: [
                         {type: 'text', value: 'hello\nworld'},
                     ],

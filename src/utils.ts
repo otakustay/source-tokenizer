@@ -6,10 +6,14 @@ type FlatMapIterate<T> = (item: T) => T | T[];
 
 const isTokenPath = (item: TokenPath | TokenPath[]): item is TokenPath => typeof item[1] === 'string';
 
-// 这个函数是一个优化后的`flatMap`，专门为`TokenPath`类型做了性能优化，
-// 因为`TokenPath`本来就是个数组，所以普通的`flatMap`要识别它就必须通过`return [tokenPath]`包一层数组，
-// 这种在遍历过程中不断包数组的形式很容易造成大量的对象生成开销，以及GC的开销，
-// 所以这个函数用更高效的方法检测了类型，使得可以直接`return tokenPath`返回而避免额外的数组对象。
+// This is a `flatMat` function specifically optimized for `TokenPath` arrays,
+// since `TokenPath` is an array itself, when an iteration returns a `TokenPath` instance (`[path, text]`),
+// a native `flatMap` will unexpected treat it as an array and concat it to output,
+// in this case we can only `return [tokenPath]` even when only a single `TokenPath` is returned,
+// many useless arrays are created and a heavier GC pressure is taken.
+//
+// In this function `TokenPath` instance is detected efficiently and will not be treated as array,
+// a simple `return tokenPath` is possible in iteratee functions to boost performance.
 export const flatMapPaths = (array: TokenPath[], iterate: FlatMapIterate<TokenPath>): TokenPath[] => {
     const output: TokenPath[] = [];
     for (const item of array) {

@@ -12,18 +12,25 @@ const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = []
         path.pop();
     };
 
-    if (node.type === 'root') {
-        // TODO: 研究一下`root`不放进去能不能跑
-        const {children, ...nodeToUse} = node;
-        putNodeWithChildren(nodeToUse, children);
+    if (node.type === 'element') {
+        // Have tried to cache immutable token object by className, no obvious performance improvements,
+        // since element node have a constant set of properties, we can simply construct corresponding token like this.
+        const nodeToUse = {
+            type: node.type,
+            properties: node.properties,
+            // TODO: 最好能干掉这东西
+            className: node.properties.className,
+        };
+        putNodeWithChildren(nodeToUse, node.children);
     }
-    else if (node.type === 'element') {
-        const {children, properties, tagName, ...nodeToUse} = node;
-        putNodeWithChildren({...nodeToUse, ...properties}, children);
+    else if (node.type === 'text') {
+        // Here `path` is a mutable stack, to create a new path we need to clone it
+        output.push([path.slice(), node.value]);
     }
     else {
-        // `path`中第一个肯定是`root`，这个东西是没用的需要丢掉
-        output.push([path.slice(1), node.value]);
+        for (const child of node.children) {
+            treeToPathList(child, output, path);
+        }
     }
 
     return output;
@@ -42,13 +49,14 @@ const splitPathToLines = (path: TokenPath): TokenPath[] => {
 
 const splitByLineBreak = (paths: TokenPath[]): LineOfTokenPath[] => paths.reduce(
     (lines: TokenPath[][], path: TokenPath) => {
-        // 此处的核心是上一轮按行拆分完的最后一条路径，和这一轮的第一条路径是在同一行的，所以要合并起来
+        // The last path of previous iteration should be on the same line of current iteration,
+        // therefore we should merge these 2 paths into a single line.
         const currentLine = last(lines);
         const [currentRemaining, ...nextLines] = splitPathToLines(path);
         return [
-            ...lines.slice(0, -1), // 前面几行的内容
-            [...currentLine, currentRemaining], // // 上一轮的最后部分和这一轮的第一部分合并
-            ...nextLines.map(path => [path]), // 后续行的内容
+            ...lines.slice(0, -1), // Elements of previous lines.
+            [...currentLine, currentRemaining], // Combine elements to form current line.
+            ...nextLines.map(path => [path]), // Elements of next lines.
         ];
     },
     [[]]

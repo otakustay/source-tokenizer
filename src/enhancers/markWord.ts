@@ -14,7 +14,7 @@ const markInPaths = (word: string, name: string, replacement: string) => (paths:
 
         return segments.reduce(
             (output: TokenPath[], text: string, i: number) => {
-                // 在`split`后的结果的每2个之间，插一个`word`表示的节点
+                // Insert a `replacement` string between every 2 split segments.
                 if (i !== 0) {
                     const path: TokenPath = [
                         [...parents, {type: 'mark', markType: name}],

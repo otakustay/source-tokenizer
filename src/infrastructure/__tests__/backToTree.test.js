@@ -32,6 +32,7 @@ describe('backToTree', () => {
     });
 
     test('merge token', () => {
+        const identifier = {type: 'element', properties: {className: ['identifier']}};
         const paths = [
             [
                 [{type: 'element', properties: {className: ['keyword']}}],
@@ -43,13 +44,13 @@ describe('backToTree', () => {
             ],
             [
                 [
-                    {type: 'element', properties: {className: ['identifier']}},
+                    identifier,
                     {type: 'mark', properties: {type: 'special'}},
                 ],
                 '$',
             ],
             [
-                [{type: 'element', properties: {className: ['identifier']}}],
+                [identifier],
                 'foo',
             ],
         ];

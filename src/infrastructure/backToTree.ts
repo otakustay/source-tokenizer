@@ -3,6 +3,10 @@ import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../../types';
 import {last} from '../utils';
 
 const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean => {
+    // All nodes passed to this function are created in place,
+    // since we do not have a node reuse mechanism,
+    // there is no condition where we can compare reference of them.
+
     if (!x || typeof x === 'string') {
         return false;
     }
@@ -35,19 +39,19 @@ const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean =
 const attachNode = (parent: TreeNode, node: TreeNode): TreeNode => {
     const previousSibling = last(parent.children);
 
-    // 在这里尽可能将节点合并起来，而不是单纯地重建一个很复杂的树
+    // Try to merge common parent nodes between 2 paths, results in as few nodes as possible.
     if (!areNodesEqual(previousSibling, node)) {
         parent.children.push(node);
     }
 
-    // 执行到这里肯定还没把叶子上的文本内容挂上去，所以类型是安全的
+    // The leaf text node is not attached yet, type assertion is safe.
     return last(parent.children) as TreeNode;
 };
 
 const attachText = (parent: TreeNode, text: string): void => {
     const previousSibling = last(parent.children);
 
-    // 文本节点一定能合并
+    // Text nodes are always mergeable.
     if (typeof previousSibling === 'string') {
         parent.children[parent.children.length - 1] = previousSibling + text;
     }
