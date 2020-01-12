@@ -1,0 +1,12 @@
+{
+  "name": "source-tokenizer",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:otakustay/source-tokenizer.git",
+  "author": "otakustay <otakustay@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/refractor": "^2.8.0",
+    "reskript": "^0.24.0"
+  }
+}
