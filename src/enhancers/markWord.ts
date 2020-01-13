@@ -1,7 +1,7 @@
 import {LineOfTokenPath, Enhancer, TokenPath} from '../../types';
 import {flatMapPaths} from '../utils';
 
-const markInPaths = (word: string, name: string, replacement: string) => (paths: LineOfTokenPath) => flatMapPaths(
+const markInPaths = (word: string, markType: string, replacement: string) => (paths: LineOfTokenPath) => flatMapPaths(
     paths,
     path => {
         const [parents, text] = path;
@@ -17,7 +17,7 @@ const markInPaths = (word: string, name: string, replacement: string) => (paths:
                 // Insert a `replacement` string between every 2 split segments.
                 if (i !== 0) {
                     const path: TokenPath = [
-                        [...parents, {type: 'mark', markType: name}],
+                        [...parents, {type: 'mark', properties: {markType}}],
                         replacement,
                     ];
                     output.push(path);

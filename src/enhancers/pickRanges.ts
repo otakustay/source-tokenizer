@@ -26,48 +26,52 @@ const splitPathToEncloseRange = (paths: LineOfTokenPath, range: Range): LineOfTo
                 output.push(path);
             }
             else {
+                // Since a range can span across two or more paths,
+                // and a range must be a single element in order to respond user events,
+                // we should attach all paths to a range based node.
+                //
+                // Suppose we have a syntax tree like:
+                //
+                // ```
+                // token1 -> token2 -> text(Hello)
+                //        -> token3 -> text(My)
+                //                  -> token4 -> text(World)
+                // ```
+                //
+                // And we are slicing it to `Hel(loMyWor)ld`, the result should be:
+                //
+                // ```
+                // token1 -> token2 -> text(Hel)
+                //        -> range1 -> token2 -> text(lo)
+                //                  -> token3 -> text(My)
+                //                            -> token4 -> text(Wor)
+                //                  -> token3 -> token4 -> text(ld)
+                // ```
+                //
+                // Someone may think we can wrap only text into range node, as a result:
+                //
+                // ```
+                // token1 -> token2 -> text(Hel)
+                //                  -> range1 -> text(lo)
+                //        -> token3 -> range1 -> text(My)
+                //                  -> token4 -> range1 -> text(Wor)
+                //                            -> text(ld)
+                // ```
+                //
+                // Although the output tree seems simpler, there are 3 range nodes in the tree,
+                // they cannot consistently respond to events like click or have a hover style,
+                // this is **NOT** a correct one.
                 const segments = sliceTokenPath(
                     path,
                     column - nodeStart,
                     rangeEnd - nodeStart,
-                    // Since a range can span across two or more paths,
-                    // and a range must be a single element in order to respond user events,
-                    // we should attach all paths to a range based node.
-                    //
-                    // Suppose we have a syntax tree like:
-                    //
-                    // ```
-                    // token1 -> token2 -> text(Hello)
-                    //        -> token3 -> text(My)
-                    //                  -> token4 -> text(World)
-                    // ```
-                    //
-                    // And we are slicing it to `Hel(loMyWor)ld`, the result should be:
-                    //
-                    // ```
-                    // token1 -> token2 -> text(Hel)
-                    //        -> range1 -> token2 -> text(lo)
-                    //                  -> token3 -> text(My)
-                    //                            -> token4 -> text(Wor)
-                    //                  -> token3 -> token4 -> text(ld)
-                    // ```
-                    //
-                    // Someone may think we can wrap only text into range node, as a result:
-                    //
-                    // ```
-                    // token1 -> token2 -> text(Hel)
-                    //                  -> range1 -> text(lo)
-                    //        -> token3 -> range1 -> text(My)
-                    //                  -> token4 -> range1 -> text(Wor)
-                    //                            -> text(ld)
-                    // ```
-                    //
-                    // Although the output tree seems simpler, there are 3 range nodes in the tree,
-                    // they cannot consistently respond to events like click or have a hover style,
-                    // this is **NOT** a correct one.
-
-                    // TODO: 如果节点里只允许`properties`的话，这里要做一下处理，把`line`之类的塞进去
-                    ([parents, text]) => [[range, ...parents], text]
+                    ([parents, text]) => {
+                        const wrapNode = {type: range.type, properties: range.properties};
+                        return [
+                            [wrapNode, ...parents],
+                            text,
+                        ];
+                    }
                 );
                 output.push(...segments);
             }

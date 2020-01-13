@@ -18,13 +18,12 @@ const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = []
         const nodeToUse = {
             type: node.type,
             properties: node.properties,
-            // TODO: 最好能干掉这东西
-            className: node.properties.className,
         };
         putNodeWithChildren(nodeToUse, node.children);
     }
     else if (node.type === 'text') {
-        // Here `path` is a mutable stack, to create a new path we need to clone it
+        // Here `path` is a mutable stack, to create a new path we need to clone it,
+        // however we **DON'T** clone each node for performance considerations, they **MUST** be immutable.
         output.push([path.slice(), node.value]);
     }
     else {

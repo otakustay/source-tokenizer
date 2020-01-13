@@ -1,4 +1,4 @@
-import deepEquals from 'fast-deep-equal';
+import shallowEquals from 'shallowequal';
 import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../../types';
 import {last} from '../utils';
 
@@ -15,25 +15,7 @@ const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean =
         return false;
     }
 
-    // TODO: 理论上，如果不展开`properties`的话，这里的性能可以提高很多
-    const xKeys = Object.keys(x);
-    const yKeys = Object.keys(y);
-
-    if (xKeys.length !== yKeys.length) {
-        return false;
-    }
-
-    for (const key of xKeys) {
-        if (key === 'children') {
-            continue;
-        }
-
-        if (!y.hasOwnProperty(key) || !deepEquals(x[key], y[key])) {
-            return false;
-        }
-    }
-
-    return true;
+    return x.type === y.type && shallowEquals(x.properties, y.properties);
 };
 
 const attachNode = (parent: TreeNode, node: TreeNode): TreeNode => {

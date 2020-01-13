@@ -22,7 +22,7 @@ describe('markWord', () => {
                 [
                     {type: 'prefix'},
                     {type: 'content'},
-                    {type: 'mark', markType: 'special'},
+                    {type: 'mark', properties: {markType: 'special'}},
                 ],
                 'hello',
             ]
@@ -39,7 +39,7 @@ describe('markWord', () => {
                 [
                     {type: 'prefix'},
                     {type: 'content'},
-                    {type: 'mark', markType: 'special'},
+                    {type: 'mark', properties: {markType: 'special'}},
                 ],
                 'hel',
             ]
@@ -72,7 +72,7 @@ describe('markWord', () => {
                     [
                         {type: 'prefix'},
                         {type: 'content'},
-                        {type: 'mark', markType: 'special'},
+                        {type: 'mark', properties: {markType: 'special'}},
                     ],
                     'o',
                 ],
@@ -91,7 +91,7 @@ describe('markWord', () => {
                     [
                         {type: 'postfix'},
                         {type: 'content'},
-                        {type: 'mark', markType: 'special'},
+                        {type: 'mark', properties: {markType: 'special'}},
                     ],
                     'o',
                 ],

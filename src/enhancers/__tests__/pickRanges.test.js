@@ -28,7 +28,7 @@ describe('pickRanges', () => {
                 ],
                 [
                     [
-                        range,
+                        {type: 'pick'},
                         {type: 'prefix'},
                         {type: 'content'},
                     ],
