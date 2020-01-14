@@ -1,16 +1,19 @@
 {
   "name": "source-tokenizer",
   "version": "0.0.1",
-  "main": "dist/index.js",
+  "main": "cjs/index.js",
+  "module": "es/index.js",
+  "sideEffects": false,
   "repository": "git@github.com:otakustay/source-tokenizer.git",
   "author": "otakustay <otakustay@gmail.com>",
   "license": "MIT",
   "files": [
-    "dist",
+    "es",
+    "cjs",
     "types"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "build": "rm -rf es cjs && tsc && tsc --module ESNext --outDir ./es",
     "start": "skr dev --src=demo",
     "lint": "skr lint src demo types",
     "test": "skr test"
@@ -23,7 +26,7 @@
     "@types/react-dom": "^16.9.4",
     "@types/refractor": "^2.8.0",
     "@types/shallowequal": "^1.1.1",
-    "antd": "^3.26.6",
+    "antd": "^3.26.7",
     "classnames": "^2.2.6",
     "echarts": "^4.6.0",
     "element-resize-detector": "^1.1.16",
@@ -32,13 +35,13 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "refractor": "^2.10.0",
-    "reskript": "^0.24.0",
+    "reskript": "^0.25.1",
     "webpack": "^4.41.5"
   },
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint",
-      "pre-push": "yarn build && yarn test"
+      "pre-push": "yarn build && yarn test && node --eval \"require('./cjs')\""
     }
   },
   "dependencies": {

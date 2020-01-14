@@ -10,7 +10,7 @@
         "strict": true,
         "sourceMap": true,
         "rootDir": "./src",
-        "outDir": "./dist",
+        "outDir": "./cjs",
         "noEmit": false,
         "declaration": true
     }

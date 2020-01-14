@@ -17,7 +17,7 @@ const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = []
         // since element node have a constant set of properties, we can simply construct corresponding token like this.
         const nodeToUse = {
             type: node.type,
-            properties: node.properties,
+            properties: node.properties, // There is only a `className` property inside
         };
         putNodeWithChildren(nodeToUse, node.children);
     }
