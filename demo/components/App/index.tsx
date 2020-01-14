@@ -1,15 +1,40 @@
-import {FC, useState, useMemo, useCallback} from 'react';
+import {FC, useState, useMemo} from 'react';
 import {highlight} from 'refractor';
-import {Checkbox} from 'antd';
 import SourceInput from '../SourceInput';
 import SyntaxTreeView from '../SyntaxTreeView';
-import {tokenize, markWord} from '../../../src';
-import {TokenizeOptions} from '../../../types';
+import {tokenize, pickRanges} from '../../../src';
+import {TokenizeOptions, SourceRange} from '../../../types';
+
+const findKeywordRangesInLine = (source: string, keyword: string, start: number = 0): SourceRange[] => {
+    const column = source.indexOf(keyword, start);
+
+    if (column < 0) {
+        return [];
+    }
+
+    const current: SourceRange = {
+        type: 'keyword',
+        line: 1,
+        column: column,
+        length: keyword.length,
+    };
+    const next = findKeywordRangesInLine(source, keyword, column + keyword.length);
+    return [current, ...next];
+};
 
 const App: FC = () => {
     const [source, setSource] = useState('');
-    const [highlightWhiteSpace, setHighlightWhiteSpace] = useState(false);
-    const toggleHighlightWhiteSpace = useCallback(e => setHighlightWhiteSpace(e.target.checked), []);
+    const [keyword, setKeyword] = useState('');
+    const ranges = useMemo(
+        () => {
+            if (!keyword) {
+                return [];
+            }
+
+            return findKeywordRangesInLine(source, keyword);
+        },
+        [source, keyword]
+    );
     const [syntax] = useMemo(
         () => {
             if (!source) {
@@ -20,22 +45,31 @@ const App: FC = () => {
                 highlight(source) {
                     return highlight(source, 'javascript');
                 },
-                enhancers: highlightWhiteSpace ? [markWord(' ', 'space')] : [],
+                enhancers: [
+                    pickRanges(ranges),
+                ],
             };
 
             return tokenize(source, options);
         },
-        [source, highlightWhiteSpace]
+        [source, ranges]
     );
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', width: '100vw', height: '100vh', padding: 10}}>
-            <SourceInput style={{marginBottom: 20}} onSubmit={setSource} />
-            <div style={{marginBottom: 20}}>
-                <Checkbox checked={highlightWhiteSpace} onChange={toggleHighlightWhiteSpace}>
-                    Highlight Spaces
-                </Checkbox>
-            </div>
+            <SourceInput
+                placeholder="Type a single line of source code"
+                submitText="Tokenize"
+                style={{marginBottom: 20}}
+                onSubmit={setSource}
+            />
+            <SourceInput
+                disabled={!source}
+                placeholder="Type keyword to search in syntax tree"
+                submitText="Highlight"
+                style={{marginBottom: 20}}
+                onSubmit={setKeyword}
+            />
             <SyntaxTreeView style={{flex: 1, width: '100%'}} syntax={syntax} />
         </div>
     );

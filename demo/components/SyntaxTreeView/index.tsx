@@ -20,7 +20,7 @@ const transformTreeData = (node: TreeNode | string): ViewNode => {
         };
     }
 
-    const text = node.type === 'element' ? node.className[1] : node.type;
+    const text = node.type === 'element' ? (node.properties?.className?.[1] ?? 'unknown') : node.type;
     const treeNode: ViewNode = {
         type: node.type,
         name: text,

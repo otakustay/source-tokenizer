@@ -1,21 +1,11 @@
-import {Enhancer, LineOfTokenPath} from '../../types';
+import {Enhancer, LineOfTokenPath, SourceRange} from '../../types';
 import {sliceTokenPath} from '../utils';
 
-export interface Range {
-    [key: string]: any;
-    type: string;
-    // The `line` is 1 based and `column` is 0 based, both eslint and babel works like this,
-    // despiting JavaScript's `Error#stack` has a 1 based column value, we decide to comply with community.
-    line: number;
-    column: number;
-    length: number;
-}
-
 interface IndexedRanges {
-    [line: number]: Range[];
+    [line: number]: SourceRange[];
 }
 
-const splitPathToEncloseRange = (paths: LineOfTokenPath, range: Range): LineOfTokenPath => {
+const splitPathToEncloseRange = (paths: LineOfTokenPath, range: SourceRange): LineOfTokenPath => {
     const {column, length} = range;
     const rangeEnd = column + length;
     const [output] = paths.reduce(
@@ -84,7 +74,7 @@ const splitPathToEncloseRange = (paths: LineOfTokenPath, range: Range): LineOfTo
     return output;
 };
 
-const pickRangesFromPath = (paths: LineOfTokenPath, ranges: Range[]): LineOfTokenPath => {
+const pickRangesFromPath = (paths: LineOfTokenPath, ranges: SourceRange[]): LineOfTokenPath => {
     if (!ranges) {
         return paths;
     }
@@ -92,9 +82,9 @@ const pickRangesFromPath = (paths: LineOfTokenPath, ranges: Range[]): LineOfToke
     return ranges.reduce(splitPathToEncloseRange, paths);
 };
 
-const pickRanges = (ranges: Range[]): Enhancer => lines => {
+const pickRanges = (ranges: SourceRange[]): Enhancer => lines => {
     const rangesByLine = ranges.reduce(
-        (rangesByLine: IndexedRanges, range: Range) => {
+        (rangesByLine: IndexedRanges, range: SourceRange) => {
             const ranges = rangesByLine[range.line] || [];
             ranges.push(range);
             rangesByLine[range.line] = ranges;

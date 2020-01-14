@@ -47,3 +47,13 @@ export interface TokenizeOptions {
     enhancers?: Enhancer[];
     highlight?(source: string): RefractorNode[];
 }
+
+export interface SourceRange {
+    type: string;
+    // The `line` is 1 based and `column` is 0 based, both eslint and babel works like this,
+    // despiting JavaScript's `Error#stack` has a 1 based column value, we decide to comply with community.
+    line: number;
+    column: number;
+    length: number;
+    properties?: {[key: string]: any};
+}
