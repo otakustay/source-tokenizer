@@ -13,6 +13,6 @@
         "rootDir": "./src",
         "outDir": "./cjs",
         "noEmit": false,
-        "declaration": true
+        "declaration": false
     }
 }

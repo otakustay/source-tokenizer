@@ -1,6 +1,6 @@
 import shallowEquals from 'shallowequal';
 import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../../types';
-import {last} from '../utils';
+import {last} from '../utils/internal';
 
 const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean => {
     // All nodes passed to this function are created in place,

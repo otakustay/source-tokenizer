@@ -1,5 +1,5 @@
 import {Enhancer, LineOfTokenPath, SourceRange} from '../../types';
-import {sliceTokenPath} from '../utils';
+import {sliceTokenPath} from '../utils/slice';
 
 interface IndexedRanges {
     [line: number]: SourceRange[];
@@ -82,7 +82,7 @@ const pickRangesFromPath = (paths: LineOfTokenPath, ranges: SourceRange[]): Line
     return ranges.reduce(splitPathToEncloseRange, paths);
 };
 
-const pickRanges = (ranges: SourceRange[]): Enhancer => lines => {
+export const pickRanges = (ranges: SourceRange[]): Enhancer => lines => {
     const rangesByLine = ranges.reduce(
         (rangesByLine: IndexedRanges, range: SourceRange) => {
             const ranges = rangesByLine[range.line] || [];
@@ -94,5 +94,3 @@ const pickRanges = (ranges: SourceRange[]): Enhancer => lines => {
     );
     return lines.map((line, i) => pickRangesFromPath(line, rangesByLine[i + 1]));
 };
-
-export default pickRanges;

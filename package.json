@@ -3,7 +3,7 @@
   "version": "0.8.1",
   "main": "cjs/index.js",
   "module": "es/index.js",
-  "types": "types/index.d.ts",
+  "types": "es/index.d.ts",
   "sideEffects": false,
   "repository": "git@github.com:otakustay/source-tokenizer.git",
   "author": "otakustay <otakustay@gmail.com>",
@@ -14,7 +14,7 @@
     "types"
   ],
   "scripts": {
-    "build": "rm -rf es cjs && tsc && tsc --module ESNext --outDir ./es",
+    "build": "rm -rf es cjs && tsc && tsc --module ESNext --declaration true --outDir ./es",
     "start": "skr dev --src=demo",
     "lint": "skr lint src demo types",
     "test": "skr test",

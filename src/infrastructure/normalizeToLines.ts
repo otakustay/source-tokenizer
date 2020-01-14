@@ -1,6 +1,6 @@
 import {RefractorNode} from 'refractor';
 import {Token, TokenPath, LineOfTokenPath} from '../../types';
-import {last} from '../utils';
+import {last} from '../utils/internal';
 import {RootNode} from './toTokenTree';
 
 const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = [], path: Token[] = []): TokenPath[] => {
