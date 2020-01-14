@@ -16,7 +16,9 @@
     "build": "rm -rf es cjs && tsc && tsc --module ESNext --outDir ./es",
     "start": "skr dev --src=demo",
     "lint": "skr lint src demo types",
-    "test": "skr test"
+    "test": "skr test",
+    "ci": "yarn build && yarn test && node --eval \"console.log(Object.keys(require('./cjs')))\"",
+    "prepack": "yarn ci"
   },
   "devDependencies": {
     "@types/echarts": "^4.4.2",
@@ -41,7 +43,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint",
-      "pre-push": "yarn build && yarn test && node --eval \"require('./cjs')\""
+      "pre-push": "yarn ci"
     }
   },
   "dependencies": {
