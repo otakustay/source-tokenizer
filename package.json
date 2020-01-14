@@ -3,6 +3,7 @@
   "version": "0.8.0",
   "main": "cjs/index.js",
   "module": "es/index.js",
+  "types": "types/index.d.ts",
   "sideEffects": false,
   "repository": "git@github.com:otakustay/source-tokenizer.git",
   "author": "otakustay <otakustay@gmail.com>",
