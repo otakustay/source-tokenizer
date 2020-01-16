@@ -1,4 +1,4 @@
-import markWord from '../markWord';
+import {markWord} from '../markWord';
 
 describe('markWord', () => {
     const syntax = [

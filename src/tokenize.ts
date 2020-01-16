@@ -1,4 +1,4 @@
-import {TokenizeOptions, Enhancer, LineOfSyntax} from '../types';
+import {TokenizeOptions, Enhancer, LineOfSyntax} from './interface';
 import toTokenTree from './infrastructure/toTokenTree';
 import normalizeToLines from './infrastructure/normalizeToLines';
 import backToTree from './infrastructure/backToTree';

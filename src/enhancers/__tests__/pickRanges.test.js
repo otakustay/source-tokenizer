@@ -1,4 +1,4 @@
-import pickRanges from '../pickRanges';
+import {pickRanges} from '../pickRanges';
 
 describe('pickRanges', () => {
     const syntax = [

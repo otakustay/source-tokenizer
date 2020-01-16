@@ -21,6 +21,9 @@
     "ci": "yarn build && yarn test && node --eval \"console.log(Object.keys(require('./cjs')))\"",
     "prepack": "yarn ci"
   },
+  "dependencies": {
+    "shallowequal": "^1.1.0"
+  },
   "devDependencies": {
     "@types/echarts": "^4.4.2",
     "@types/element-resize-detector": "^1.1.2",
@@ -46,8 +49,5 @@
       "pre-commit": "yarn lint",
       "pre-push": "yarn ci"
     }
-  },
-  "dependencies": {
-    "shallowequal": "^1.1.0"
   }
 }

@@ -1,4 +1,4 @@
-import {LineOfTokenPath, Enhancer, TokenPath} from '../../types';
+import {LineOfTokenPath, Enhancer, TokenPath} from '../interface';
 import {flatMapPaths} from '../utils/internal';
 
 const markInPaths = (word: string, markType: string, replacement: string) => (paths: LineOfTokenPath) => flatMapPaths(

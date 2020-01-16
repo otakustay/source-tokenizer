@@ -1,5 +1,5 @@
 import {RefractorNode} from 'refractor';
-import {Token, TokenPath, LineOfTokenPath} from '../../types';
+import {Token, TokenPath, LineOfTokenPath} from '../interface';
 import {last} from '../utils/internal';
 import {RootNode} from './toTokenTree';
 

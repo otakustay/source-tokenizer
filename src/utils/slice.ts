@@ -1,4 +1,4 @@
-import {TokenPath} from '../../types';
+import {TokenPath} from '../interface';
 
 type Transform = (path: TokenPath) => TokenPath;
 

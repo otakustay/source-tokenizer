@@ -1,5 +1,5 @@
 import shallowEquals from 'shallowequal';
-import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../../types';
+import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../interface';
 import {last} from '../utils/internal';
 
 const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean => {

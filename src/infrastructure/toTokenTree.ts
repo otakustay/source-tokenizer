@@ -1,5 +1,5 @@
 import {RefractorNode} from 'refractor';
-import {TokenizeOptions} from '../../types';
+import {TokenizeOptions} from '../interface';
 
 export interface RootNode {
     type: 'root';

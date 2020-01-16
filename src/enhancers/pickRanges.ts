@@ -1,4 +1,4 @@
-import {Enhancer, LineOfTokenPath, SourceRange} from '../../types';
+import {Enhancer, LineOfTokenPath, SourceRange} from '../interface';
 import {sliceTokenPath} from '../utils/slice';
 
 interface IndexedRanges {
