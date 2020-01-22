@@ -1,5 +1,5 @@
 import {RefractorNode} from 'refractor';
-import {TokenizeOptions} from '../interface';
+import {HighlightSource} from '../interface';
 
 export interface RootNode {
     type: 'root';
@@ -8,7 +8,7 @@ export interface RootNode {
 
 const createRoot = (children: RefractorNode[]): RootNode => ({children, type: 'root'});
 
-export default (source: string, {highlight}: TokenizeOptions): RootNode => {
+export default (source: string, highlight?: HighlightSource): RootNode => {
     if (highlight) {
         return createRoot(highlight(source));
     }

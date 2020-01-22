@@ -5,6 +5,10 @@ describe('index', () => {
         expect(typeof tokenizer.tokenize).toBe('function');
     });
 
+    test('export controlled', () => {
+        expect(typeof tokenizer.controlled).toBe('function');
+    });
+
     test('export markWord', () => {
         expect(typeof tokenizer.markWord).toBe('function');
     });

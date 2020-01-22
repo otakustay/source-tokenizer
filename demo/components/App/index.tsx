@@ -1,9 +1,8 @@
 import {FC, useState, useMemo} from 'react';
 import {highlight} from 'refractor';
+import {controlled, pickRanges, SourceRange} from '../../../src';
 import SourceInput from '../SourceInput';
 import SyntaxTreeView from '../SyntaxTreeView';
-import {tokenize, pickRanges} from '../../../src';
-import {TokenizeOptions, SourceRange} from '../../../types';
 
 const findKeywordRangesInLine = (source: string, keyword: string, start: number = 0): SourceRange[] => {
     const column = source.indexOf(keyword, start);
@@ -13,7 +12,7 @@ const findKeywordRangesInLine = (source: string, keyword: string, start: number 
     }
 
     const current: SourceRange = {
-        type: 'keyword',
+        type: 'search',
         line: 1,
         column: column,
         length: keyword.length,
@@ -25,34 +24,30 @@ const findKeywordRangesInLine = (source: string, keyword: string, start: number 
 const App: FC = () => {
     const [source, setSource] = useState('');
     const [keyword, setKeyword] = useState('');
-    const ranges = useMemo(
+    const controllerWithHighlight = useMemo(
         () => {
-            if (!keyword) {
-                return [];
+            if (!source) {
+                return null;
             }
 
-            return findKeywordRangesInLine(source, keyword);
+            return controlled(source, source => highlight(source, 'javascript')).compress();
         },
-        [source, keyword]
+        [source]
     );
     const [syntax] = useMemo(
         () => {
-            if (!source) {
-                return [undefined];
+            if (!controllerWithHighlight) {
+                return [];
             }
 
-            const options: TokenizeOptions = {
-                highlight(source) {
-                    return highlight(source, 'javascript');
-                },
-                enhancers: [
-                    pickRanges(ranges),
-                ],
-            };
+            if (!keyword) {
+                return controllerWithHighlight.toSyntax();
+            }
 
-            return tokenize(source, options);
+            const ranges = findKeywordRangesInLine(source, keyword);
+            return controllerWithHighlight.enhance(pickRanges(ranges)).toSyntax();
         },
-        [source, ranges]
+        [controllerWithHighlight, source, keyword]
     );
 
     return (

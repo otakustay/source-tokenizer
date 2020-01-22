@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {RefractorNode} from 'refractor';
 
 export interface Token {
@@ -41,11 +42,13 @@ export type TokenPath = [Token[], string];
 
 export type LineOfTokenPath = TokenPath[];
 
+export type HighlightSource = (source: string) => RefractorNode[];
+
 export type Enhancer = (linesOfPaths: LineOfTokenPath[]) => LineOfTokenPath[];
 
 export interface TokenizeOptions {
+    highlight?: HighlightSource;
     enhancers?: Enhancer[];
-    highlight?(source: string): RefractorNode[];
 }
 
 export interface SourceRange {
@@ -56,4 +59,12 @@ export interface SourceRange {
     column: number;
     length: number;
     properties?: {[key: string]: any};
+}
+
+export interface TokenizeController {
+    enhance(enhancer: Enhancer): TokenizeController;
+    undo(steps: number): TokenizeController;
+    reset(): TokenizeController;
+    compress(): TokenizeController;
+    toSyntax(): LineOfSyntax[];
 }

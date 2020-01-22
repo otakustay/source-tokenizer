@@ -14,13 +14,13 @@ const toSource = (node, source = '') => {
 describe('toTokenTree', () => {
     test('transform simple string', () => {
         const text = 'hello';
-        const output = toTokenTree(text, {});
+        const output = toTokenTree(text);
         expect(output).toEqual({type: 'root', children: [{type: 'text', value: text}]});
     });
 
     test('transform with highlight', () => {
         const text = 'const a = 3;';
-        const output = toTokenTree(text, {highlight});
+        const output = toTokenTree(text, highlight);
         expect(toSource(output)).toBe(text);
     });
 });

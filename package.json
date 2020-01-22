@@ -17,7 +17,7 @@
     "build": "rm -rf es cjs && tsc && tsc --module ESNext --declaration true --outDir ./es",
     "start": "skr dev --src=demo",
     "lint": "skr lint src demo types",
-    "test": "skr test",
+    "test": "skr test --coverage",
     "ci": "yarn build && yarn test && node --eval \"console.log(Object.keys(require('./cjs')))\"",
     "prepack": "yarn ci"
   },

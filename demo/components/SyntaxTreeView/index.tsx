@@ -1,6 +1,6 @@
 import {useMemo, FC, HTMLAttributes} from 'react';
+import {TreeNode, LineOfSyntax} from '../../../src';
 import Chart from '../Chart';
-import {TreeNode, LineOfSyntax} from '../../../types';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
     syntax?: LineOfSyntax;
