@@ -2325,7 +2325,6 @@ __metadata:
     "@types/element-resize-detector": ^1.1.3
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11
-    "@types/refractor": ^3.0.2
     "@types/shallowequal": ^1.1.1
     "@typescript-eslint/eslint-plugin": ^5.54.0
     "@typescript-eslint/parser": ^5.54.0
@@ -3153,7 +3152,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prismjs@npm:*, @types/prismjs@npm:^1.0.0":
+"@types/prismjs@npm:^1.0.0":
   version: 1.26.0
   resolution: "@types/prismjs@npm:1.26.0"
   checksum: cd5e7a6214c1f4213ec512a5fcf6d8fe37a56b813fc57ac95b5ff5ee074742bfdbd2f2730d9fd985205bf4586728e09baa97023f739e5aa1c9735a7c1ecbd11a
@@ -3198,15 +3197,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: e752df961105e5127652460504785897ca6e77259e0da8f233f694f9e8f451cde7fa0709d4456ade0ff600c8ce909cfe29f9b08b9c247fa9b734e126ec53edd7
-  languageName: node
-  linkType: hard
-
-"@types/refractor@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@types/refractor@npm:3.0.2"
-  dependencies:
-    "@types/prismjs": "*"
-  checksum: 91d49fbf4b523065d9fb6e6d3d87ff3f0d4e2246b0cdd9d13a3664512322eaf718f7cd95a8980cfb4228d5f5875991c0a879a0405cc36f83c5fbfc943c8d09f2
   languageName: node
   linkType: hard
 

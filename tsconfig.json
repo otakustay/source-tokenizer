@@ -17,7 +17,7 @@
         "paths": {
             "@/*": ["./demo/*"],
             "@otakustay/source-tokenizer": ["./src/index.ts"]
-        },
+        }
     },
     "include": ["src", "demo", "*.ts"]
 }

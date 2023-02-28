@@ -82,7 +82,7 @@ export interface SourceRange {
     line: number;
     column: number;
     length: number;
-    properties?: {[key: string]: any};
+    properties?: Record<string, any>;
 }
 
 export interface TokenizeController {

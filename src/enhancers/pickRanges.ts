@@ -1,10 +1,6 @@
 import {Enhancer, SourceRange, WorkingLineOfTokenPath} from '../interface.js';
 import {sliceTokenPath} from '../utils/slice.js';
 
-interface IndexedRanges {
-    [line: number]: SourceRange[];
-}
-
 function splitPathToEncloseRange(paths: WorkingLineOfTokenPath, range: SourceRange): WorkingLineOfTokenPath {
     const {column, length} = range;
     const rangeEnd = column + length;
@@ -74,7 +70,7 @@ function splitPathToEncloseRange(paths: WorkingLineOfTokenPath, range: SourceRan
     return output;
 }
 
-function pickRangesFromPath(paths: WorkingLineOfTokenPath, ranges: SourceRange[]): WorkingLineOfTokenPath {
+function pickRangesFromPath(paths: WorkingLineOfTokenPath, ranges: SourceRange[] | undefined): WorkingLineOfTokenPath {
     if (!ranges) {
         return paths;
     }
@@ -84,16 +80,15 @@ function pickRangesFromPath(paths: WorkingLineOfTokenPath, ranges: SourceRange[]
 
 export function pickRanges(ranges: SourceRange[]): Enhancer {
     return lines => {
-        const rangesByLine = ranges.reduce(
-            (rangesByLine: IndexedRanges, range: SourceRange) => {
-                const ranges = rangesByLine[range.line] || [];
+        const rangesByLine = ranges.reduce<Map<number, SourceRange[]>>(
+            (rangesByLine, range) => {
+                const ranges = rangesByLine.get(range.line) ?? [];
                 ranges.push(range);
-                // eslint-disable-next-line no-param-reassign
-                rangesByLine[range.line] = ranges;
+                rangesByLine.set(range.line, ranges);
                 return rangesByLine;
             },
-            {}
+            new Map()
         );
-        return lines.map((line, i) => pickRangesFromPath(line, rangesByLine[i + 1]));
+        return lines.map((line, i) => pickRangesFromPath(line, rangesByLine.get(i + 1)));
     };
 }

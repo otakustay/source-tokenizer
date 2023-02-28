@@ -4,6 +4,7 @@ export default configure(
     'webpack',
     {
         build: {
+            appTitle: 'Source Tokenizer',
             uses: [],
         },
         devServer: {

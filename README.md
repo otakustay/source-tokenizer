@@ -67,7 +67,7 @@ Line 2
 There is no actual benefit if we only transform a string into raw syntax trees, we need highlight source code first.
 
 ```javascript
-import {tokenize} from '@otakustay/ssource-tokenizer';
+import {tokenize} from '@otakustay/source-tokenizer';
 import {refractor} from 'refractor';
 
 const options = {
@@ -120,7 +120,7 @@ Unlike native highlight tools like [highlight.js](https://www.npmjs.com/package/
 We can pass `enhancers` array to `options`:
 
 ```javascript
-import {tokenize} from '@otakustay/ssource-tokenizer';
+import {tokenize} from '@otakustay/source-tokenizer';
 
 const options = {
     highlight() {
@@ -146,7 +146,7 @@ function markWord(word: string, name: string, replacement: string = word): Enhan
 ```
 
 ```javascript
-import {markWord} from '@otakustay/ssource-tokenizer';
+import {markWord} from '@otakustay/source-tokenizer';
 
 const enhancers = [
     markWord('\t', 'tab', ' '.repeat(4)),
@@ -166,15 +166,15 @@ Another utility is `pickRanges` which allows you to specify some range in each l
 A `range` object specifies the line number, start column and range length, along with custom data attached via `properties` property:
 
 ```javascript
-import {pickRanges} from '@otakustay/ssource-tokenizer';
+import {pickRanges} from '@otakustay/source-tokenizer';
 
 const ranges = [
     {
+        type: 'reference', // tokens matching this range will transform to a node object with the same type
         line: 1, // this is 1 based
         column: 2, // this is 0 based
         length: 4,
         properties: {
-            type: 'reference',
             url: '/docs#foo',
         },
     },
