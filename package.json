@@ -1,6 +1,6 @@
 {
   "name": "@otakustay/source-tokenizer",
-  "version": "0.8.3",
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
