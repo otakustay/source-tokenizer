@@ -1,5 +1,5 @@
 import {RefractorNode} from 'refractor';
-import {HighlightSource} from '../interface';
+import {HighlightSource} from '../interface.js';
 
 export interface RootNode {
     type: 'root';

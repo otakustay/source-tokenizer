@@ -1,8 +1,12 @@
-import {render} from 'react-dom';
-import App from '../components/App';
-import './index.global.less';
+import {StrictMode} from 'react';
+import {createRoot} from 'react-dom/client';
+import App from '@/components/App/index.js';
+import '@/styles';
 
-render(
-    <App />,
-    document.body.appendChild(document.createElement('div'))
+const root = createRoot(document.body.appendChild(document.createElement('div')));
+
+root.render(
+    <StrictMode>
+        <App />
+    </StrictMode>
 );

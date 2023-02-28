@@ -5,11 +5,11 @@ import {
     LineOfSyntax,
     LineOfTokenPath,
     TokenizeController,
-} from './interface';
-import {last} from './utils/internal';
-import toTokenTree from './infrastructure/toTokenTree';
-import normalizeToLines from './infrastructure/normalizeToLines';
-import backToTree from './infrastructure/backToTree';
+} from './interface.js';
+import {last} from './utils/internal.js';
+import toTokenTree from './infrastructure/toTokenTree.js';
+import normalizeToLines from './infrastructure/normalizeToLines.js';
+import backToTree from './infrastructure/backToTree.js';
 
 export const tokenize = (source: string, options: TokenizeOptions = {}): LineOfSyntax[] => {
     const {highlight, enhancers = []} = options;

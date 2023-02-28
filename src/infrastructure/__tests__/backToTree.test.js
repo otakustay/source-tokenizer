@@ -1,3 +1,4 @@
+import {describe, test, expect} from 'vitest';
 import backToTree from '../backToTree';
 
 const nodeToSource = (node, source = '') => {

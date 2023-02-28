@@ -1,3 +1,4 @@
+import {describe, test, expect} from 'vitest';
 import normalizeToLines from '../normalizeToLines';
 
 const expectPathEquals = ([parents, text], hint, source) => {

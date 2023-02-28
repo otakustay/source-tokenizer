@@ -1,18 +1,23 @@
 {
-    "extends": "./node_modules/reskript/config/tsconfig.json",
-    "include": [
-        "src",
-    ],
     "compilerOptions": {
-        "allowJs": false,
-        "target": "ES2015",
-        "module": "CommonJS",
-        "strict": true,
-        "noImplicitAny": false,
+        "module": "NodeNext",
+        "target": "ESNext",
+        "moduleResolution": "NodeNext",
         "sourceMap": true,
-        "rootDir": "./src",
-        "outDir": "./cjs",
-        "noEmit": false,
-        "declaration": false
-    }
+        "declaration": false,
+        "allowJs": false,
+        "skipLibCheck": true,
+        "jsx": "react-jsx",
+        "esModuleInterop": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noEmit": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./demo/*"],
+            "@otakustay/source-tokenizer": ["./src/index.ts"]
+        },
+    },
+    "include": ["src", "demo", "*.ts"]
 }

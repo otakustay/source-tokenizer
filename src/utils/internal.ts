@@ -1,4 +1,4 @@
-import {TokenPath} from '../interface';
+import {TokenPath} from '../interface.js';
 
 export const last = <T>(array: T[]) => array[array.length - 1];
 

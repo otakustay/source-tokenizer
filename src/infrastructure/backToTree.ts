@@ -1,6 +1,6 @@
 import shallowEquals from 'shallowequal';
-import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../interface';
-import {last} from '../utils/internal';
+import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../interface.js';
+import {last} from '../utils/internal.js';
 
 const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean => {
     // All nodes passed to this function are created in place,
@@ -35,6 +35,7 @@ const attachText = (parent: TreeNode, text: string): void => {
 
     // Text nodes are always mergeable.
     if (typeof previousSibling === 'string') {
+        // eslint-disable-next-line no-param-reassign
         parent.children[parent.children.length - 1] = previousSibling + text;
     }
     else {

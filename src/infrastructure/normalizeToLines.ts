@@ -1,7 +1,7 @@
 import {RefractorNode} from 'refractor';
-import {Token, TokenPath, LineOfTokenPath} from '../interface';
-import {last} from '../utils/internal';
-import {RootNode} from './toTokenTree';
+import {Token, TokenPath, LineOfTokenPath} from '../interface.js';
+import {last} from '../utils/internal.js';
+import {RootNode} from './toTokenTree.js';
 
 const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = [], path: Token[] = []): TokenPath[] => {
     const putNodeWithChildren = (node: Token, children: RefractorNode[]): void => {

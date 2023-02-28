@@ -1,4 +1,5 @@
-import * as tokenizer from '..';
+import {describe, test, expect} from 'vitest';
+import * as tokenizer from '../index';
 
 describe('index', () => {
     test('export tokenize', () => {

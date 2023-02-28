@@ -1,8 +1,8 @@
-import {FC, useState, useMemo} from 'react';
+import {useState, useMemo} from 'react';
 import {highlight} from 'refractor';
-import {controlled, pickRanges, SourceRange} from '../../../src';
-import SourceInput from '../SourceInput';
-import SyntaxTreeView from '../SyntaxTreeView';
+import {controlled, pickRanges, SourceRange} from '@otakustay/source-tokenizer';
+import SourceInput from '../SourceInput/index.js';
+import SyntaxTreeView from '../SyntaxTreeView/index.js';
 
 const findKeywordRangesInLine = (source: string, keyword: string, start: number = 0): SourceRange[] => {
     const column = source.indexOf(keyword, start);
@@ -21,7 +21,7 @@ const findKeywordRangesInLine = (source: string, keyword: string, start: number 
     return [current, ...next];
 };
 
-const App: FC = () => {
+export default function App() {
     const [source, setSource] = useState('');
     const [keyword, setKeyword] = useState('');
     const controllerWithHighlight = useMemo(
@@ -68,6 +68,4 @@ const App: FC = () => {
             <SyntaxTreeView style={{flex: 1, width: '100%'}} syntax={syntax} />
         </div>
     );
-};
-
-export default App;
+}

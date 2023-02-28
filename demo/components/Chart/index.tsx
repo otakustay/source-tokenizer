@@ -1,15 +1,15 @@
-import {memo, useEffect, useRef, SFC, HTMLAttributes} from 'react';
-import echarts, {ECharts} from 'echarts';
+import {memo, useEffect, useRef, HTMLAttributes} from 'react';
+import * as echarts from 'echarts';
 import createResizeDetector from 'element-resize-detector';
 
 const resizeDetector = createResizeDetector({strategy: 'scroll'});
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-    options: object;
+    options: any;
 }
 
-const Chart: SFC<Props> = ({options, ...props}) => {
-    const chart = useRef<ECharts | null>(null);
+function Chart({options, ...props}: Props) {
+    const chart = useRef<echarts.ECharts | null>(null);
     const container = useRef<HTMLDivElement>(null);
     useEffect(
         () => {
@@ -40,6 +40,6 @@ const Chart: SFC<Props> = ({options, ...props}) => {
     );
 
     return <div ref={container} {...props} />;
-};
+}
 
 export default memo(Chart);

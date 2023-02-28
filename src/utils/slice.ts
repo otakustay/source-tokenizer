@@ -1,4 +1,4 @@
-import {TokenPath} from '../interface';
+import {TokenPath} from '../interface.js';
 
 type Transform = (path: TokenPath) => TokenPath;
 

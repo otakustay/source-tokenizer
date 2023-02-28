@@ -1,5 +1,5 @@
-import {Enhancer, LineOfTokenPath, SourceRange} from '../interface';
-import {sliceTokenPath} from '../utils/slice';
+import {Enhancer, LineOfTokenPath, SourceRange} from '../interface.js';
+import {sliceTokenPath} from '../utils/slice.js';
 
 interface IndexedRanges {
     [line: number]: SourceRange[];
@@ -87,6 +87,7 @@ export const pickRanges = (ranges: SourceRange[]): Enhancer => lines => {
         (rangesByLine: IndexedRanges, range: SourceRange) => {
             const ranges = rangesByLine[range.line] || [];
             ranges.push(range);
+            // eslint-disable-next-line no-param-reassign
             rangesByLine[range.line] = ranges;
             return rangesByLine;
         },

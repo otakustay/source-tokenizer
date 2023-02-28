@@ -1,3 +1,4 @@
+import {describe, test, expect} from 'vitest';
 import {markWord} from '../markWord';
 
 describe('markWord', () => {

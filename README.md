@@ -11,13 +11,13 @@ This is a infrastructure reused between [react-source-view](https://github.com/o
 With NPM:
 
 ```shell
-npm install source-tokenizer
+npm install @otakustay/source-tokenizer
 ```
 
 With Yarn:
 
 ```shell
-yarn add source-tokenizer
+yarn add @otakustay/source-tokenizer
 ```
 
 ## Basic Usage
@@ -25,7 +25,7 @@ yarn add source-tokenizer
 Use `tokenize` exported function to transform source string into an array containing syntax trees.
 
 ```javascript
-import {tokenize} from 'source-tokenizer';
+import {tokenize} from '@otakustay/source-tokenizer';
 
 const linesOfSyntax = tokenize(source);
 
@@ -67,7 +67,7 @@ Line 2
 There is no actual benefit if we only transform a string into raw syntax trees, we need highlight source code first.
 
 ```javascript
-import {tokenize} from 'source-tokenizer';
+import {tokenize} from '@otakustay/ssource-tokenizer';
 import * as refractor from 'refractor';
 
 const options = {
@@ -120,7 +120,7 @@ Unlike native highlight tools like [highlight.js](https://www.npmjs.com/package/
 We can pass `enhancers` array to `options`:
 
 ```javascript
-import {tokenize} from 'source-tokenizer';
+import {tokenize} from '@otakustay/ssource-tokenizer';
 
 const options = {
     highlight() {
@@ -146,7 +146,7 @@ function markWord(word: string, name: string, replacement: string = word): Enhan
 ```
 
 ```javascript
-import {markWord} from 'source-tokenizer';
+import {markWord} from '@otakustay/ssource-tokenizer';
 
 const enhancers = [
     markWord('\t', 'tab', ' '.repeat(4)),
@@ -166,7 +166,7 @@ Another utility is `pickRanges` which allows you to specify some range in each l
 A `range` object specifies the line number, start column and range length, along with custom data attached via `properties` property:
 
 ```javascript
-import {pickRanges} from 'source-tokenizer';
+import {pickRanges} from '@otakustay/ssource-tokenizer';
 
 const ranges = [
     {

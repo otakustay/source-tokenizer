@@ -1,4 +1,4 @@
-import {useState, useCallback, FC, CSSProperties} from 'react';
+import {useState, useCallback, CSSProperties, ChangeEvent} from 'react';
 import {Input, Button} from 'antd';
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
     onSubmit(value: string): void;
 }
 
-const SourceInput: FC<Props> = ({style, disabled, placeholder, submitText, onSubmit}) => {
+export default function SourceInput({style, disabled, placeholder, submitText, onSubmit}: Props) {
     const [value, setValue] = useState('');
-    const typeSource = useCallback(e => setValue(e.target.value), []);
+    const typeSource = useCallback((e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value), []);
     const submitSource = useCallback(() => onSubmit(value), [value, onSubmit]);
 
     return (
@@ -28,6 +28,4 @@ const SourceInput: FC<Props> = ({style, disabled, placeholder, submitText, onSub
             </Button>
         </div>
     );
-};
-
-export default SourceInput;
+}

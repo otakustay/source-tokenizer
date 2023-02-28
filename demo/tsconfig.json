@@ -1,9 +1,0 @@
-{
-    "extends": "../node_modules/reskript/config/tsconfig.json",
-    "include": [
-        ".",
-    ],
-    "compilerOptions": {
-        "jsx": "preserve"
-    }
-}
