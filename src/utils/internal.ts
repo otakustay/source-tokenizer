@@ -1,10 +1,14 @@
-import {TokenPath} from '../interface.js';
+import {WorkingTokenPath} from '../interface.js';
 
-export const last = <T>(array: T[]) => array[array.length - 1];
+export function last<T>(array: T[]): T {
+    return array[array.length - 1];
+}
 
-type FlatMapIterate<T> = (item: T) => T | T[];
+type FlatMapIterate = (item: WorkingTokenPath) => WorkingTokenPath | WorkingTokenPath[];
 
-const isTokenPath = (item: TokenPath | TokenPath[]): item is TokenPath => typeof item[1] === 'string';
+function isTokenPath(item: WorkingTokenPath | WorkingTokenPath[]): item is WorkingTokenPath {
+    return typeof item[1] === 'string';
+}
 
 // This is a `flatMat` function specifically optimized for `TokenPath` arrays,
 // since `TokenPath` is an array itself, when an iteration returns a `TokenPath` instance (`[path, text]`),
@@ -14,8 +18,8 @@ const isTokenPath = (item: TokenPath | TokenPath[]): item is TokenPath => typeof
 //
 // In this function `TokenPath` instance is detected efficiently and will not be treated as array,
 // a simple `return tokenPath` is possible in iteratee functions to boost performance.
-export const flatMapPaths = (array: TokenPath[], iterate: FlatMapIterate<TokenPath>): TokenPath[] => {
-    const output: TokenPath[] = [];
+export const flatMapPaths = (array: WorkingTokenPath[], iterate: FlatMapIterate): WorkingTokenPath[] => {
+    const output: WorkingTokenPath[] = [];
     for (const item of array) {
         const result = iterate(item);
         if (isTokenPath(result)) {

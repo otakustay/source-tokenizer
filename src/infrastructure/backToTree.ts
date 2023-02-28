@@ -1,8 +1,8 @@
 import shallowEquals from 'shallowequal';
-import {LineOfTokenPath, TokenPath, TreeNode, LineOfSyntax} from '../interface.js';
+import {OutputContainerNode, OutputLineOfSyntax, WorkingLineOfTokenPath, WorkingTokenPath} from '../interface.js';
 import {last} from '../utils/internal.js';
 
-const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean => {
+const areNodesEqual = (x: OutputContainerNode | string | undefined, y: OutputContainerNode): boolean => {
     // All nodes passed to this function are created in place,
     // since we do not have a node reuse mechanism,
     // there is no condition where we can compare reference of them.
@@ -18,7 +18,7 @@ const areNodesEqual = (x: TreeNode | string | undefined, y: TreeNode): boolean =
     return x.type === y.type && shallowEquals(x.properties, y.properties);
 };
 
-const attachNode = (parent: TreeNode, node: TreeNode): TreeNode => {
+const attachNode = (parent: OutputContainerNode, node: OutputContainerNode): OutputContainerNode => {
     const previousSibling = last(parent.children);
 
     // Try to merge common parent nodes between 2 paths, results in as few nodes as possible.
@@ -27,10 +27,10 @@ const attachNode = (parent: TreeNode, node: TreeNode): TreeNode => {
     }
 
     // The leaf text node is not attached yet, type assertion is safe.
-    return last(parent.children) as TreeNode;
+    return last(parent.children) as OutputContainerNode;
 };
 
-const attachText = (parent: TreeNode, text: string): void => {
+const attachText = (parent: OutputContainerNode, text: string): void => {
     const previousSibling = last(parent.children);
 
     // Text nodes are always mergeable.
@@ -43,17 +43,17 @@ const attachText = (parent: TreeNode, text: string): void => {
     }
 };
 
-const attachTokenPath = ([parents, text]: TokenPath, root: TreeNode): void => {
+const attachTokenPath = ([parents, text]: WorkingTokenPath, root: OutputContainerNode): void => {
     let parent = root;
     for (const token of parents) {
-        const node: TreeNode = {...token, children: []};
+        const node: OutputContainerNode = {...token, children: []};
         parent = attachNode(parent, node);
     }
     attachText(parent, text);
 };
 
-export default (paths: LineOfTokenPath): LineOfSyntax => {
-    const root: TreeNode = {type: 'root', children: []};
+export default (paths: WorkingLineOfTokenPath): OutputLineOfSyntax => {
+    const root: OutputContainerNode = {type: 'root', children: []};
 
     for (const path of paths) {
         attachTokenPath(path, root);

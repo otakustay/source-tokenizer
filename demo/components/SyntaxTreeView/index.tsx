@@ -1,9 +1,9 @@
 import {useMemo, FC, HTMLAttributes} from 'react';
-import {TreeNode, LineOfSyntax} from '@otakustay/source-tokenizer';
+import {OutputLineOfSyntax, OutputSyntaxElement} from '@otakustay/source-tokenizer';
 import Chart from '../Chart/index.js';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-    syntax?: LineOfSyntax;
+    syntax?: OutputLineOfSyntax;
 }
 
 interface ViewNode {
@@ -12,7 +12,7 @@ interface ViewNode {
     children?: ViewNode[];
 }
 
-const transformTreeData = (node: TreeNode | string): ViewNode => {
+const transformTreeData = (node: OutputSyntaxElement | string): ViewNode => {
     if (typeof node === 'string') {
         return {
             type: 'text',

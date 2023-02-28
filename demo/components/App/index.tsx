@@ -1,5 +1,5 @@
 import {useState, useMemo} from 'react';
-import {highlight} from 'refractor';
+import {refractor} from 'refractor';
 import {controlled, pickRanges, SourceRange} from '@otakustay/source-tokenizer';
 import SourceInput from '../SourceInput/index.js';
 import SyntaxTreeView from '../SyntaxTreeView/index.js';
@@ -30,7 +30,7 @@ export default function App() {
                 return null;
             }
 
-            return controlled(source, source => highlight(source, 'javascript')).compress();
+            return controlled(source, source => refractor.highlight(source, 'javascript')).compress();
         },
         [source]
     );

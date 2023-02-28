@@ -1,14 +1,14 @@
-import {Enhancer, LineOfTokenPath, SourceRange} from '../interface.js';
+import {Enhancer, SourceRange, WorkingLineOfTokenPath} from '../interface.js';
 import {sliceTokenPath} from '../utils/slice.js';
 
 interface IndexedRanges {
     [line: number]: SourceRange[];
 }
 
-const splitPathToEncloseRange = (paths: LineOfTokenPath, range: SourceRange): LineOfTokenPath => {
+function splitPathToEncloseRange(paths: WorkingLineOfTokenPath, range: SourceRange): WorkingLineOfTokenPath {
     const {column, length} = range;
     const rangeEnd = column + length;
-    const [output] = paths.reduce(
+    const [output] = paths.reduce<[WorkingLineOfTokenPath, number]>(
         ([output, nodeStart], path) => {
             const nodeEnd = nodeStart + path[1].length;
 
@@ -68,30 +68,32 @@ const splitPathToEncloseRange = (paths: LineOfTokenPath, range: SourceRange): Li
 
             return [output, nodeEnd];
         },
-        [[], 0] as [LineOfTokenPath, number]
+        [[], 0]
     );
 
     return output;
-};
+}
 
-const pickRangesFromPath = (paths: LineOfTokenPath, ranges: SourceRange[]): LineOfTokenPath => {
+function pickRangesFromPath(paths: WorkingLineOfTokenPath, ranges: SourceRange[]): WorkingLineOfTokenPath {
     if (!ranges) {
         return paths;
     }
 
     return ranges.reduce(splitPathToEncloseRange, paths);
-};
+}
 
-export const pickRanges = (ranges: SourceRange[]): Enhancer => lines => {
-    const rangesByLine = ranges.reduce(
-        (rangesByLine: IndexedRanges, range: SourceRange) => {
-            const ranges = rangesByLine[range.line] || [];
-            ranges.push(range);
-            // eslint-disable-next-line no-param-reassign
-            rangesByLine[range.line] = ranges;
-            return rangesByLine;
-        },
-        {}
-    );
-    return lines.map((line, i) => pickRangesFromPath(line, rangesByLine[i + 1]));
-};
+export function pickRanges(ranges: SourceRange[]): Enhancer {
+    return lines => {
+        const rangesByLine = ranges.reduce(
+            (rangesByLine: IndexedRanges, range: SourceRange) => {
+                const ranges = rangesByLine[range.line] || [];
+                ranges.push(range);
+                // eslint-disable-next-line no-param-reassign
+                rangesByLine[range.line] = ranges;
+                return rangesByLine;
+            },
+            {}
+        );
+        return lines.map((line, i) => pickRangesFromPath(line, rangesByLine[i + 1]));
+    };
+}

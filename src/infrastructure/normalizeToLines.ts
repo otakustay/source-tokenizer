@@ -1,10 +1,15 @@
-import {RefractorNode} from 'refractor';
-import {Token, TokenPath, LineOfTokenPath} from '../interface.js';
+import {
+    InputElementNode,
+    InputRootNode,
+    InputSourceNode,
+    WorkingLineOfTokenPath,
+    WorkingToken,
+    WorkingTokenPath,
+} from '../interface.js';
 import {last} from '../utils/internal.js';
-import {RootNode} from './toTokenTree.js';
 
-const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = [], path: Token[] = []): TokenPath[] => {
-    const putNodeWithChildren = (node: Token, children: RefractorNode[]): void => {
+function treeToPathList(node: InputSourceNode, output: WorkingTokenPath[] = [], path: WorkingToken[] = []) {
+    const putNodeWithChildren = (node: Omit<InputElementNode, 'children'>, children: InputSourceNode[]): void => {
         path.push(node);
         for (const child of children) {
             treeToPathList(child, output, path);
@@ -20,22 +25,20 @@ const treeToPathList = (node: RootNode | RefractorNode, output: TokenPath[] = []
             properties: node.properties, // There is only a `className` property inside
         };
         putNodeWithChildren(nodeToUse, node.children);
-    }
-    else if (node.type === 'text') {
+    } else if (node.type === 'text') {
         // Here `path` is a mutable stack, to create a new path we need to clone it,
         // however we **DON'T** clone each node for performance considerations, they **MUST** be immutable.
         output.push([path.slice(), node.value]);
-    }
-    else {
+    } else {
         for (const child of node.children) {
             treeToPathList(child, output, path);
         }
     }
 
     return output;
-};
+}
 
-const splitPathToLines = (path: TokenPath): TokenPath[] => {
+const splitPathToLines = (path: WorkingTokenPath): WorkingTokenPath[] => {
     const [parents, text] = path;
 
     if (!text.includes('\n')) {
@@ -46,23 +49,24 @@ const splitPathToLines = (path: TokenPath): TokenPath[] => {
     return linesOfText.map(line => [parents, line]);
 };
 
-const splitByLineBreak = (paths: TokenPath[]): LineOfTokenPath[] => paths.reduce(
-    (lines: TokenPath[][], path: TokenPath) => {
-        // The last path of previous iteration should be on the same line of current iteration,
-        // therefore we should merge these 2 paths into a single line.
-        const currentLine = last(lines);
-        const [currentRemaining, ...nextLines] = splitPathToLines(path);
-        return [
-            ...lines.slice(0, -1), // Elements of previous lines.
-            [...currentLine, currentRemaining], // Combine elements to form current line.
-            ...nextLines.map(path => [path]), // Elements of next lines.
-        ];
-    },
-    [[]]
-);
+const splitByLineBreak = (paths: WorkingTokenPath[]): WorkingLineOfTokenPath[] =>
+    paths.reduce(
+        (lines: WorkingTokenPath[][], path: WorkingTokenPath) => {
+            // The last path of previous iteration should be on the same line of current iteration,
+            // therefore we should merge these 2 paths into a single line.
+            const currentLine = last(lines);
+            const [currentRemaining, ...nextLines] = splitPathToLines(path);
+            return [
+                ...lines.slice(0, -1), // Elements of previous lines.
+                [...currentLine, currentRemaining], // Combine elements to form current line.
+                ...nextLines.map(path => [path]), // Elements of next lines.
+            ];
+        },
+        [[]]
+    );
 
-export default (tree: RootNode): LineOfTokenPath[] => {
+export default function normalizeToLines(tree: InputRootNode): WorkingLineOfTokenPath[] {
     const paths = treeToPathList(tree);
     const linesOfPaths = splitByLineBreak(paths);
     return linesOfPaths;
-};
+}

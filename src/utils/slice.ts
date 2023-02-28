@@ -1,16 +1,16 @@
-import {TokenPath} from '../interface.js';
+import {WorkingTokenPath} from '../interface.js';
 
-type Transform = (path: TokenPath) => TokenPath;
+type Transform = (path: WorkingTokenPath) => WorkingTokenPath;
 
-export const sliceTokenPath = (path: TokenPath, start: number, end: number, transform?: Transform): TokenPath[] => {
+export function sliceTokenPath(path: WorkingTokenPath, start: number, end: number, transform?: Transform) {
     const [parents, text] = path;
 
     if (end <= 0 || start >= text.length) {
         return [path];
     }
 
-    const output: TokenPath[] = [];
-    const split = (start: number, end?: number): TokenPath => {
+    const output: WorkingTokenPath[] = [];
+    const split = (start: number, end?: number): WorkingTokenPath => {
         const slicedText = text.slice(start, end);
         return [parents, slicedText];
     };
@@ -29,4 +29,4 @@ export const sliceTokenPath = (path: TokenPath, start: number, end: number, tran
     }
 
     return output;
-};
+}

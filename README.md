@@ -68,7 +68,7 @@ There is no actual benefit if we only transform a string into raw syntax trees, 
 
 ```javascript
 import {tokenize} from '@otakustay/ssource-tokenizer';
-import * as refractor from 'refractor';
+import {refractor} from 'refractor';
 
 const options = {
     highlight(source) {

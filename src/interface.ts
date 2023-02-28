@@ -1,17 +1,29 @@
-import {RefractorNode} from 'refractor';
+// Types BEFORE we optimize the data sturcture
+export interface InputTextNode {
+    type: 'text';
+    value: string;
+}
 
-export interface Token {
+export interface InputElementNode {
+    type: 'element';
+    properties?: Record<string, any>;
+    children: Array<InputTextNode | InputElementNode>;
+}
+
+export interface InputRootNode {
+    type: 'root';
+    children: Array<InputTextNode | InputElementNode>;
+}
+
+export type InputSourceNode = InputTextNode | InputElementNode | InputRootNode;
+
+export type HighlightSource = (source: string) => InputRootNode;
+
+// Types AFTER we optimize the data structure
+export interface WorkingToken {
     type: string;
-    properties?: {[key: string]: any};
+    properties?: Record<string, any>;
 }
-
-export interface TreeNode extends Token {
-    children: Array<TreeNode | string>;
-}
-
-export type SyntaxElement = TreeNode | string;
-
-export type LineOfSyntax = SyntaxElement[];
 
 // This is a dedicated data structure for representing "a path of tokens", in which:
 //
@@ -36,14 +48,27 @@ export type LineOfSyntax = SyntaxElement[];
 // const newPath = [[...parents, customNode], text];
 // ```
 //
-// We suppose by doing this can greatly optimize performance.
-export type TokenPath = [Token[], string];
+// We expect a greate performance boost by doing this.
+export type WorkingTokenPath = [WorkingToken[], string];
 
-export type LineOfTokenPath = TokenPath[];
+export type WorkingLineOfTokenPath = WorkingTokenPath[];
 
-export type HighlightSource = (source: string) => RefractorNode[];
+export type Enhancer = (linesOfPaths: WorkingLineOfTokenPath[]) => WorkingLineOfTokenPath[];
 
-export type Enhancer = (linesOfPaths: LineOfTokenPath[]) => LineOfTokenPath[];
+export interface OutputContainerNode {
+    type: string;
+    properties?: Record<string, any>;
+    children: Array<OutputContainerNode | string>;
+}
+
+export interface OutputRootNode {
+    type: 'root';
+    children: Array<OutputContainerNode | string>;
+}
+
+export type OutputSyntaxElement = OutputContainerNode | string;
+
+export type OutputLineOfSyntax = OutputSyntaxElement[];
 
 export interface TokenizeOptions {
     highlight?: HighlightSource;
@@ -65,5 +90,5 @@ export interface TokenizeController {
     undo(steps: number): TokenizeController;
     reset(): TokenizeController;
     compress(): TokenizeController;
-    toSyntax(): LineOfSyntax[];
+    toSyntax(): OutputLineOfSyntax[];
 }

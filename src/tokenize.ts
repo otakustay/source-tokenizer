@@ -2,16 +2,16 @@ import {
     TokenizeOptions,
     HighlightSource,
     Enhancer,
-    LineOfSyntax,
-    LineOfTokenPath,
     TokenizeController,
+    WorkingLineOfTokenPath,
+    OutputLineOfSyntax,
 } from './interface.js';
 import {last} from './utils/internal.js';
 import toTokenTree from './infrastructure/toTokenTree.js';
 import normalizeToLines from './infrastructure/normalizeToLines.js';
 import backToTree from './infrastructure/backToTree.js';
 
-export const tokenize = (source: string, options: TokenizeOptions = {}): LineOfSyntax[] => {
+export const tokenize = (source: string, options: TokenizeOptions = {}): OutputLineOfSyntax[] => {
     const {highlight, enhancers = []} = options;
     const tree = toTokenTree(source, highlight);
     const lines = normalizeToLines(tree);
@@ -20,7 +20,7 @@ export const tokenize = (source: string, options: TokenizeOptions = {}): LineOfS
     return enhancedLines.map(backToTree);
 };
 
-const createController = (input: LineOfTokenPath[], stack: LineOfTokenPath[][]): TokenizeController => {
+function createController(input: WorkingLineOfTokenPath[], stack: WorkingLineOfTokenPath[][]): TokenizeController {
     const controller: TokenizeController = {
         enhance(enhancer) {
             const current = stack.length ? last(stack) : input;
@@ -54,7 +54,7 @@ const createController = (input: LineOfTokenPath[], stack: LineOfTokenPath[][]):
         },
     };
     return controller;
-};
+}
 
 export const controlled = (source: string, highlight?: HighlightSource): TokenizeController => {
     const tree = toTokenTree(source, highlight);

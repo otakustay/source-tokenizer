@@ -1,5 +1,5 @@
 import {describe, test, expect} from 'vitest';
-import * as refractor from 'refractor';
+import {refractor} from 'refractor';
 import {tokenize, controlled} from '../tokenize';
 
 describe('tokenize', () => {

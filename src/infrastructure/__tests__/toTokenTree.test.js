@@ -1,5 +1,5 @@
 import {describe, test, expect} from 'vitest';
-import * as refractor from 'refractor';
+import {refractor} from 'refractor';
 import toTokenTree from '../toTokenTree';
 
 const highlight = source => refractor.highlight(source, 'javascript');
