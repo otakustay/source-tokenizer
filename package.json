@@ -59,7 +59,7 @@
     "refractor": "^4.8.0",
     "standard-version": "^9.5.0",
     "typescript": "^4.9.5",
-    "vite": "^4.1.4",
+    "vite": "^4.1.5",
     "vitest": "^0.29.1",
     "webpack": "^5.75.0"
   }
